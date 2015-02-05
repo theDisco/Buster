@@ -1,0 +1,19 @@
+{
+  "name": "afera/buster",
+  "description": "Definition of git hooks and other quality checks",
+  "license": "proprietary",
+  "require": {
+    "phpunit/phpunit": "4.4.5"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "vendor-dir": "vendor/",
+    "process-timeout": 600
+  },
+  "autoload": {
+    "psr-4": {
+      "Buster\\": "src/"
+    }
+  }
+}
