@@ -4,7 +4,7 @@ namespace Buster\Git\Hook;
 
 use Buster\Iterator;
 
-abstract class AbstractCollector
+abstract class AbstractFileCollector
 {
     const HOOK_PRE_COMMIT = 'pre-commit';
 
@@ -14,6 +14,7 @@ abstract class AbstractCollector
      */
     public function collectByRegex($regex)
     {
+        // TODO: accept iterator instead of initializing it
         return new Iterator\RegexIterator($this->getCollectedFiles(), $regex);
     }
 

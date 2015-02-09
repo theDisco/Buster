@@ -2,30 +2,54 @@
 
 namespace Buster\Executor;
 
-use Buster\Git\Hook\AbstractCollector;
+use Buster\Git\Hook\AbstractFileCollector;
+use Symfony\Component\Process\ProcessBuilder;
 
 class Lint extends AbstractExecutor
 {
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'PHP Lint';
+    }
+
     /**
      * @return array
      */
     protected function getAllowedHookTypes()
     {
         return array(
-            AbstractCollector::HOOK_PRE_COMMIT,
+            AbstractFileCollector::HOOK_PRE_COMMIT,
         );
     }
 
-    public function execute(AbstractCollector $collector)
+    /**
+     * @return int
+     */
+    public function execute()
     {
-        $collection = $collector->collectByRegex('/(\.php)|(\.inc)$/');
+        $collection = $this->getGitHookFileCollector()->collectByRegex('/(\.php)|(\.inc)$/');
+        $exitCodes = 0;
 
-        if ($collection->count()) {
-            foreach ($collection as $file) {
-                exec("php -l $file", $output, $return);
-            }
+        foreach ($collection as $file) {
+            $exitCodes += $this->lint($file);
         }
 
-        exit(1);
+        return $exitCodes;
+    }
+
+    /**
+     * @param string $file
+     * @return int
+     */
+    private function lint($file)
+    {
+        $processBuilder = new ProcessBuilder(array('php', '-l', $file, '2>/dev/null'));
+        $lint = $processBuilder->getProcess();
+        $lint->run(array($this, 'notifyOutput'));
+
+        return $lint->getExitCode();
     }
 }

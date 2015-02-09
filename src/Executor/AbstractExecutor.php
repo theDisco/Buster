@@ -2,18 +2,41 @@
 
 namespace Buster\Executor;
 
-use Buster\Git\Hook\AbstractCollector;
+use Buster\Git\Hook\AbstractFileCollector;
+use Buster\Manager;
+use Buster\Output\OutputInterface;
 
 abstract class AbstractExecutor
 {
     /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    /**
+     * @var AbstractFileCollector
+     */
+    private $gitFileHookCollector;
+
+    /**
+     * @param Manager $manager
+     * @return void
+     */
+    public function acceptManager(Manager $manager)
+    {
+        if ($this->shouldExecute($manager->getGitHookFileCollector())) {
+            $manager->visitExecutor($this);
+        }
+    }
+
+    /**
      * Validates, if the executor should be executed for
      * the file collection provided from current hook.
      *
-     * @param AbstractCollector $collector
+     * @param AbstractFileCollector $collector
      * @return bool
      */
-    public function shouldExecute(AbstractCollector $collector)
+    private function shouldExecute(AbstractFileCollector $collector)
     {
         if (!in_array($collector->collectionForHook(), $this->getAllowedHookTypes())) {
             return false;
@@ -23,11 +46,69 @@ abstract class AbstractExecutor
     }
 
     /**
+     * @param OutputInterface $output
+     * @return void
+     */
+    public function setOutput(OutputInterface $output)
+    {
+        $this->output = $output;
+    }
+
+    /**
+     * @param string $type
+     * @param string $buffer
+     * @return void
+     */
+    public function notifyOutput($type, $buffer)
+    {
+        if (!$this->output) {
+            return;
+        }
+
+        if ($type == 'out') {
+            $this->output->write($buffer);
+        } else if ($type == 'err') {
+            // todo hide implementation
+            $this->output->write("<fg=red>$buffer</fg=red>");
+        }
+    }
+
+    /**
+     * @param AbstractFileCollector $collector
+     * @return void
+     */
+    public function setGitHookFileCollector(AbstractFileCollector $collector)
+    {
+        $this->gitFileHookCollector = $collector;
+    }
+
+    /**
+     * @return AbstractFileCollector
+     */
+    protected function getGitHookFileCollector()
+    {
+        return $this->gitFileHookCollector;
+    }
+
+    /**
+     * Return the name that identifies the executor. It is only used
+     * for display purposes.
+     *
+     * @return string
+     */
+    abstract public function getName();
+
+    /**
      * Return an array of hook names an executor can be attached to.
      *
      * @return array
      */
     abstract protected function getAllowedHookTypes();
 
-    abstract public function execute(AbstractCollector $collector);
+    /**
+     * Execute the process.
+     *
+     * @return int
+     */
+    abstract public function execute();
 }

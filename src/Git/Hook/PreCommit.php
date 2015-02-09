@@ -2,7 +2,7 @@
 
 namespace Buster\Git\Hook;
 
-class PreCommit extends AbstractCollector
+class PreCommit extends AbstractFileCollector
 {
     /**
      * @return string
@@ -24,7 +24,7 @@ class PreCommit extends AbstractCollector
             $against = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
         }
 
-        exec("git diff-index --check --cached $against --", $output, $return);
+        exec("git diff-index --name-only --cached --diff-filter=ACMR $against --", $output, $return);
 
         return $output;
     }
