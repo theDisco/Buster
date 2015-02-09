@@ -22,7 +22,7 @@ class PhpCodeSniffer extends AbstractExecutor
      * @param string $phpBin
      * @param string $standard
      */
-    public function __construct($phpBin = 'phpcs', $standard = 'PSR2')
+    public function __construct($phpBin, $standard = 'PSR2')
     {
         if (!is_file($phpBin) || !is_executable($phpBin)) {
             throw new RuntimeException("$phpBin is not an executable file");

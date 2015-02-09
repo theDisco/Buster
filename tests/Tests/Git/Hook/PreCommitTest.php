@@ -23,6 +23,12 @@ class PreCommitTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCollectorHasACorrectName()
+    {
+        $preCommit = new PreCommit;
+        $this->assertSame('pre-commit', $preCommit->collectionForHook());
+    }
+
     public function testCollectFilesFromPreCommitOnAnEmptyRepository()
     {
         $this->initRepository('initialized');

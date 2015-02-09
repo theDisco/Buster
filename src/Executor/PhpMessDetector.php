@@ -22,7 +22,7 @@ class PhpMessDetector extends AbstractExecutor
      * @param string $phpBin
      * @param string $checks
      */
-    public function __construct($phpBin = 'phpmd', $checks = null)
+    public function __construct($phpBin, $checks = null)
     {
         if (!is_file($phpBin) || !is_executable($phpBin)) {
             throw new RuntimeException("$phpBin is not an executable file");

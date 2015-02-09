@@ -2,7 +2,7 @@
 
 namespace Buster\Fixtures;
 
-class LintFiles
+class PhpCodeSnifferFiles
 {
     /**
      * @return array
@@ -10,8 +10,8 @@ class LintFiles
     public static function getValidAndInvalidFiles()
     {
         return array(
-            RESOURCES_PATH . '/lint/correct.php',
-            RESOURCES_PATH . '/lint/incorrect.php',
+            RESOURCES_PATH . '/code-sniffer/correct.php',
+            RESOURCES_PATH . '/code-sniffer/incorrect.php',
         );
     }
 
@@ -21,7 +21,7 @@ class LintFiles
     public static function getValidFiles()
     {
         return array(
-            RESOURCES_PATH . '/lint/correct.php',
+            RESOURCES_PATH . '/code-sniffer/correct.php',
         );
     }
 }

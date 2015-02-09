@@ -4,7 +4,7 @@ namespace Buster\Mocks;
 
 use Buster\Git\Hook\AbstractFileCollector;
 
-class LintFileCollector extends AbstractFileCollector
+class PreCommitFileCollector extends AbstractFileCollector
 {
     /**
      * @var array
