@@ -51,4 +51,18 @@ class Console implements OutputInterface
     {
         $this->output->write($message);
     }
+
+    /**
+     * @param string $type
+     * @param string $message
+     * @return void
+     */
+    public function outputFromProcess($type, $message)
+    {
+        if ($type == 'out') {
+            $this->output->write($message);
+        } elseif ($type == 'err') {
+            $this->output->write("<fg=red>$message</fg=red>");
+        }
+    }
 }

@@ -6,7 +6,8 @@
     "phpunit/phpunit": "4.4.5",
     "symfony/console": "2.6.4",
     "symfony/process": "2.6.4",
-    "phpmd/phpmd": "2.2.0"
+    "phpmd/phpmd": "2.2.0",
+    "instaclick/php-code-sniffer": "1.4.2"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

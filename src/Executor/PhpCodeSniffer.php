@@ -6,7 +6,7 @@ use Buster\Git\Hook\AbstractFileCollector;
 use Symfony\Component\Process\ProcessBuilder;
 use RuntimeException;
 
-class PhpMessDetector extends AbstractExecutor
+class PhpCodeSniffer extends AbstractExecutor
 {
     /**
      * @var string
@@ -16,32 +16,31 @@ class PhpMessDetector extends AbstractExecutor
     /**
      * @var string
      */
-    private $checks;
+    private $standard;
 
     /**
      * @param string $phpBin
-     * @param string $checks
+     * @param string $standard
      */
-    public function __construct($phpBin = 'phpmd', $checks = null)
+    public function __construct($phpBin = 'phpcs', $standard = 'PSR2')
     {
         if (!is_file($phpBin) || !is_executable($phpBin)) {
             throw new RuntimeException("$phpBin is not an executable file");
         }
 
         $this->phpBin = $phpBin;
-        $this->checks = $checks;
-
-        if (is_null($checks)) {
-            $this->checks = 'controversial,unusedcode,codesize,design,naming';
-        }
+        $this->standard = $standard;
     }
 
     /**
+     * Return the name that identifies the executor. It is only used
+     * for display purposes.
+     *
      * @return string
      */
     public function getName()
     {
-        return 'PHP Mess Detector';
+        return 'PHP Code Sniffer';
     }
 
     /**
@@ -55,6 +54,8 @@ class PhpMessDetector extends AbstractExecutor
     }
 
     /**
+     * Execute the process.
+     *
      * @return int
      */
     public function execute()
@@ -63,7 +64,7 @@ class PhpMessDetector extends AbstractExecutor
         $exitCodes = 0;
 
         foreach ($collection as $file) {
-            $exitCodes += $this->phpMd($file);
+            $exitCodes += $this->codeSniffer($file);
         }
 
         return $exitCodes;
@@ -73,31 +74,20 @@ class PhpMessDetector extends AbstractExecutor
      * @param string $file
      * @return int
      */
-    private function phpMd($file)
+    private function codeSniffer($file)
     {
         $processBuilder = new ProcessBuilder(
             array(
                 'php',
                 $this->phpBin,
-                $file,
-                'text',
-                $this->checks
+                '--standard=' . $this->standard,
+                $file
             )
         );
         $processBuilder->setWorkingDirectory($this->getWorkingDirectory());
-        $process = $processBuilder->getProcess();
-        $collected = '';
-        $process->run(
-            function ($type, $buffer) use (&$collected) {
-                if ($type == 'out') {
-                    $collected .= $buffer;
-                }
-            }
-        );
 
-        if (strlen($collected) > 1) {
-            $this->notifyOutput('err', $collected . "\n");
-        }
+        $process = $processBuilder->getProcess();
+        $process->run(array($this, 'notifyOutput'));
 
         return $process->getExitCode();
     }

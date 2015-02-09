@@ -4,33 +4,31 @@ namespace Buster\Executor;
 
 use Buster\Git\Hook\AbstractFileCollector;
 use Symfony\Component\Process\ProcessBuilder;
+use RuntimeException;
 
 class PhpUnit extends AbstractExecutor
 {
     /**
      * @var string
      */
-    private $workingDir;
-
-    /**
-     * @var string
-     */
     private $phpBin;
 
     /**
-     * @param string $workingDir
      * @param string $phpBin
      */
-    public function __construct($workingDir, $phpBin = 'phpunit')
+    public function __construct($phpBin = 'phpunit')
     {
-        $this->workingDir = $workingDir;
+        if (!is_file($phpBin) || !is_executable($phpBin)) {
+            throw new RuntimeException("$phpBin is not an executable file");
+        }
+
         $this->phpBin = $phpBin;
     }
 
     /**
      * @return string
      */
-    function getName()
+    public function getName()
     {
         return 'PHPUnit';
     }
@@ -51,7 +49,7 @@ class PhpUnit extends AbstractExecutor
     public function execute()
     {
         $processBuilder = new ProcessBuilder(array('php', $this->phpBin));
-        $processBuilder->setWorkingDirectory($this->workingDir);
+        $processBuilder->setWorkingDirectory($this->getWorkingDirectory());
         $processBuilder->setTimeout(3600);
         $phpUnit = $processBuilder->getProcess();
         $phpUnit->run(array($this, 'notifyOutput'));

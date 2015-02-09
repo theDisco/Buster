@@ -19,6 +19,11 @@ abstract class AbstractExecutor
     private $gitFileHookCollector;
 
     /**
+     * @var string
+     */
+    private $workingDirectory;
+
+    /**
      * @param Manager $manager
      * @return void
      */
@@ -55,22 +60,35 @@ abstract class AbstractExecutor
     }
 
     /**
-     * @param string $type
-     * @param string $buffer
+     * @param $workingDirectory
      * @return void
      */
-    public function notifyOutput($type, $buffer)
+    public function setWorkingDirectory($workingDirectory)
+    {
+        assert(is_dir($workingDirectory));
+        $this->workingDirectory = $workingDirectory;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getWorkingDirectory()
+    {
+        return $this->workingDirectory;
+    }
+
+    /**
+     * @param string $type
+     * @param string $message
+     * @return void
+     */
+    public function notifyOutput($type, $message)
     {
         if (!$this->output) {
             return;
         }
 
-        if ($type == 'out') {
-            $this->output->write($buffer);
-        } else if ($type == 'err') {
-            // todo hide implementation
-            $this->output->write("<fg=red>$buffer</fg=red>");
-        }
+        $this->output->outputFromProcess($type, $message);
     }
 
     /**

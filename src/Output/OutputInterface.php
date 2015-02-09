@@ -2,7 +2,6 @@
 
 namespace Buster\Output;
 
-
 interface OutputInterface
 {
     public function error($message);
@@ -12,4 +11,6 @@ interface OutputInterface
     public function success($message);
 
     public function write($message);
+
+    public function outputFromProcess($type, $message);
 }

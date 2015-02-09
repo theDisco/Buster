@@ -4,6 +4,7 @@ namespace Buster;
 
 use Buster\Git\Hook\AbstractFileCollector;
 use Buster\Output\Console;
+use Exception;
 
 class Manager
 {
@@ -24,11 +25,25 @@ class Manager
 
     /**
      * @param AbstractFileCollector $collector
+     * @param string $workingDirectory
      */
-    public function __construct(AbstractFileCollector $collector)
+    public function __construct(AbstractFileCollector $collector, $workingDirectory = '.')
     {
         $this->collector = $collector;
         $this->output = new Console;
+        $this->workingDirectory = $workingDirectory;
+
+        $this->initErrorHandlers();
+        $this->output->info('Starting the Buster');
+    }
+
+    /**
+     * @return void
+     */
+    private function initErrorHandlers()
+    {
+        assert_options(ASSERT_BAIL, 1);
+        set_exception_handler(array($this, 'handleException'));
     }
 
     /**
@@ -48,6 +63,8 @@ class Manager
     {
         $executor->setOutput($this->output);
         $executor->setGitHookFileCollector($this->collector);
+        $executor->setWorkingDirectory($this->workingDirectory);
+
         $this->executors[] = $executor;
     }
 
@@ -88,12 +105,19 @@ class Manager
     }
 
     /**
+     * @param Exception $exception
+     * @return void
+     */
+    public function handleException(Exception $exception)
+    {
+        $this->error($exception->getMessage() . ' in ' . $exception->getFile());
+    }
+
+    /**
      * @return int
      */
     public function execute()
     {
-        $this->output->info('Starting the Buster');
-
         foreach ($this->executors as $executor) {
             $executorName = $executor->getName();
             $this->head("Executing $executorName");
