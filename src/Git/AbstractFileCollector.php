@@ -14,7 +14,6 @@ abstract class AbstractFileCollector
      */
     public function collectByRegex($regex)
     {
-        // TODO: accept iterator instead of initializing it
         return new Iterator\RegexIterator($this->getCollectedFiles(), $regex);
     }
 
