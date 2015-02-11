@@ -22,7 +22,7 @@ class Manager
     /**
      * @var Executor\AbstractExecutor[]
      */
-    private $executors = [];
+    private $executors = array();
 
     /**
      * @param AbstractFileCollector $collector
