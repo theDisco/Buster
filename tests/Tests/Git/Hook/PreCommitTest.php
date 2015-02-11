@@ -79,6 +79,8 @@ class PreCommitTest extends PHPUnit_Framework_TestCase
 
         chdir($this->testDir);
         exec('git init');
+        exec('git config --global user.email "wojtek@aferalabs.com"');
+        exec('git config --global user.name "Wojtek Gancarczyk"');
 
         $this->writeContentToFiles($fileContent);
     }
