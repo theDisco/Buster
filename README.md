@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/theDisco/Buster.svg?branch=master)](https://travis-ci.org/theDisco/Buster)
+
 What is Buster?
 ===============
 

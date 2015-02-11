@@ -70,15 +70,6 @@ class RegexIterator implements Iterator, Countable
      */
     public function count()
     {
-        $count = 0;
-        $this->rewind();
-
-        foreach ($this as $file) {
-            $count++;
-        }
-
-        $this->rewind();
-
-        return $count;
+        return count(iterator_to_array($this));
     }
 }
