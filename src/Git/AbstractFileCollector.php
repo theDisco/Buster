@@ -1,6 +1,6 @@
 <?php
 
-namespace Buster\Git\Hook;
+namespace Buster\Git;
 
 use Buster\Iterator;
 

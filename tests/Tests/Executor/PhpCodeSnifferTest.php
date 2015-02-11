@@ -26,7 +26,7 @@ class PhpCodeSnifferTest extends PHPUnit_Framework_TestCase
     public function runCodeSnifferForFileCollection(array $fileCollection)
     {
         $codeSniffer = new PhpCodeSniffer(VENDOR_BIN_DIR . '/phpcs');
-        $codeSniffer->setGitHookFileCollector(new Mocks\PreCommitFileCollector($fileCollection));
+        $codeSniffer->setGitHookFileCollector(new Mocks\Git\PreCommitFileCollector($fileCollection));
 
         return $codeSniffer->execute();
     }

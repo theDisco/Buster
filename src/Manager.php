@@ -2,8 +2,9 @@
 
 namespace Buster;
 
-use Buster\Git\Hook\AbstractFileCollector;
+use Buster\Git\AbstractFileCollector;
 use Buster\Output\Console;
+use Buster\Output\OutputInterface;
 use Exception;
 
 class Manager
@@ -21,7 +22,7 @@ class Manager
     /**
      * @var Executor\AbstractExecutor[]
      */
-    private $executors;
+    private $executors = [];
 
     /**
      * @param AbstractFileCollector $collector
@@ -34,7 +35,17 @@ class Manager
         $this->workingDirectory = $workingDirectory;
 
         $this->initErrorHandlers();
-        $this->output->info('Starting the Buster');
+    }
+
+    /**
+     * Overwrite the default output
+     *
+     * @param OutputInterface $output
+     * @return void
+     */
+    public function setOutput(OutputInterface $output)
+    {
+        $this->output = $output;
     }
 
     /**
@@ -118,6 +129,8 @@ class Manager
      */
     public function execute()
     {
+        $this->output->info('Starting the Buster');
+
         foreach ($this->executors as $executor) {
             $executorName = $executor->getName();
             $this->head("Executing $executorName");

@@ -1,6 +1,6 @@
 <?php
 
-use Buster\Git\Hook\PreCommit;
+use Buster\Git\PreCommit;
 
 class PreCommitTest extends PHPUnit_Framework_TestCase
 {

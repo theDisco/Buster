@@ -26,7 +26,7 @@ class PhpMessDetectorTest extends PHPUnit_Framework_TestCase
     public function runMessDetectorForFileCollection(array $fileCollection)
     {
         $messDetector = new PhpMessDetector(VENDOR_BIN_DIR . '/phpmd');
-        $messDetector->setGitHookFileCollector(new Mocks\PreCommitFileCollector($fileCollection));
+        $messDetector->setGitHookFileCollector(new Mocks\Git\PreCommitFileCollector($fileCollection));
 
         return $messDetector->execute();
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Buster\Mocks;
+namespace Buster\Mocks\Git;
 
-use Buster\Git\Hook\AbstractFileCollector;
+use Buster\Git\AbstractFileCollector;
 
 class PreCommitFileCollector extends AbstractFileCollector
 {

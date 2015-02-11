@@ -20,7 +20,7 @@ class LintTest extends PHPUnit_Framework_TestCase
     public function runLintForFileCollection(array $fileCollection)
     {
         $lint = new Lint;
-        $lint->setGitHookFileCollector(new Mocks\PreCommitFileCollector($fileCollection));
+        $lint->setGitHookFileCollector(new Mocks\Git\PreCommitFileCollector($fileCollection));
 
         return $lint->execute();
     }

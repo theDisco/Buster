@@ -2,7 +2,7 @@
 
 namespace Buster\Executor;
 
-use Buster\Git\Hook\AbstractFileCollector;
+use Buster\Git\AbstractFileCollector;
 use Buster\Manager;
 use Buster\Output\OutputInterface;
 

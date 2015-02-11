@@ -37,7 +37,7 @@ $workingDir = __DIR__;
 
 require $workingDir . '/vendor/autoload.php';
 
-$manager = new \Buster\Manager(new \Buster\Git\Hook\PreCommit, $workingDir);
+$manager = new \Buster\Manager(new \Buster\Git\PreCommit, $workingDir);
 $manager->addExecutor(new \Buster\Executor\Lint);
 $manager->addExecutor(new \Buster\Executor\PhpCodeSniffer($workingDir . '/vendor/bin/phpcs'));
 $manager->addExecutor(new \Buster\Executor\PhpMessDetector($workingDir . '/vendor/bin/phpmd'));
