@@ -1,4 +1,9 @@
 [![Build Status](https://travis-ci.org/theDisco/Buster.svg?branch=master)](https://travis-ci.org/theDisco/Buster)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/theDisco/Buster/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/theDisco/Buster/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/theDisco/Buster/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/theDisco/Buster/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0225fa62-a96b-454e-a923-7df5ebaf5485/mini.png)](https://insight.sensiolabs.com/projects/0225fa62-a96b-454e-a923-7df5ebaf5485)
+
+.scrutinizer.yml
 
 What is Buster?
 ===============
